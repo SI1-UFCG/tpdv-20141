@@ -28,7 +28,7 @@ public class GenericDAOImpl {
 		return JPA.em().find(clazz, id);
 	}
 
-	public <T> List<T> findAllByClassName(Class clazz) {
+	public <T> List<T> findAllByClassName(Class<T> clazz) {
 		String hql = "FROM " + clazz.getCanonicalName();
 		Query hqlQuery = JPA.em().createQuery(hql);
 		return hqlQuery.getResultList();
@@ -46,15 +46,16 @@ public class GenericDAOImpl {
 		Long id = JPA
 				.em()
 				.createQuery(
-						"select max(v.id) from " + clazz.getCanonicalName()
-								+ " v", Long.class).getSingleResult();
+						"select max(v." + attributeName + ") from "
+								+ clazz.getCanonicalName() + " v", Long.class)
+				.getSingleResult();
 		return (T) findByEntityId(clazz, id);
 	}
 
-	public <T> List<T> findByAttributeName(String className,
-			String attributeName, String attributeValue) {
-		String hql = "FROM " + className + " c" + " WHERE c." + attributeName
-				+ " = '" + attributeValue + "'";
+	public <T> List<T> findByAttributeName(Class clazz, String attributeName,
+			String attributeValue) {
+		String hql = "FROM " + clazz.getCanonicalName() + " c" + " WHERE c."
+				+ attributeName + " = '" + attributeValue + "'";
 		Query hqlQuery = JPA.em().createQuery(hql);
 		return hqlQuery.getResultList();
 	}
