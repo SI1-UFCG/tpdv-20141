@@ -1,7 +1,12 @@
 package models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class DescProduto {
 
+	@Id
 	private long codigo;
 	private String desc;
 	private float preco;
